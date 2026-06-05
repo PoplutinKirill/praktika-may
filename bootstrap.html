@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FurniShop — Bootstrap Edition</title>
+  
+  <!-- Google Fonts (same as original) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS + Icons + custom overrides -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    /* ===== GLOBAL & RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --teal: #2a7d78;
+      --teal-dark: #1f5e5a;
+      --teal-light: #3a9d97;
+      --dark: #1a1a1a;
+      --mid: #555;
+      --light-bg: #f7f6f4;
+      --white: #ffffff;
+      --border: #e8e4df;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --r: 8px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.09);
+    }
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+    h1, h2, h3, .logo-font {
+      font-family: var(--font-display);
+    }
+    .section-pad { padding: 80px 0; }
+    @media (max-width: 768px) { .section-pad { padding: 56px 0; } }
+    
+    /* buttons */
+    .btn-teal {
+      background: var(--teal);
+      color: var(--white);
+      padding: 12px 32px;
+      border-radius: var(--r);
+      font-weight: 500;
+      font-size: 0.93rem;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-teal:hover {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+      color: white;
+    }
+    /* navbar transparent fixed */
+    .navbar-custom {
+      background: rgba(26,26,26,0.96);
+      backdrop-filter: blur(6px);
+      padding: 0;
+      transition: all 0.2s;
+    }
+    .navbar-brand-custom {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: white;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #fff 0%, var(--teal-light) 50%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: background-position 0.5s;
+    }
+    .navbar-brand-custom:hover { background-position: 200% center; }
+    .nav-link-custom {
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      font-size: 0.9rem;
+      position: relative;
+      text-decoration: none;
+    }
+    .nav-link-custom:hover, .nav-link-custom.active {
+      color: white;
+    }
+    .nav-link-custom::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--teal-light);
+      transition: width 0.25s;
+    }
+    .nav-link-custom:hover::after,
+    .nav-link-custom.active::after { width: 100%; }
+    
+    /* Hero */
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      padding-top: 62px;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      animation: heroScale 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    @keyframes heroScale {
+      from { transform: scale(1.08); }
+      to { transform: scale(1); }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(110deg, rgba(10,10,10,0.85) 0%, rgba(42,125,120,0.35) 55%, rgba(15,15,15,0.18) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 560px;
+    }
+    .hero-content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-content p {
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    .hero-content .btn-teal { animation: fadeUp 0.8s ease 0.4s both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* stats bar gradient */
+    .stats-bar {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, var(--teal-light) 100%);
+      padding: 28px 0;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: slideInLeft 0.5s ease both;
+    }
+    .stat-item:nth-child(1) { animation-delay: 0.1s; }
+    .stat-item:nth-child(2) { animation-delay: 0.25s; }
+    .stat-item:nth-child(3) { animation-delay: 0.4s; }
+    .stat-item:nth-child(4) { animation-delay: 0.55s; }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+      transition: transform 0.25s;
+    }
+    .stat-item:hover .stat-number {
+      transform: scale(1.12);
+      animation: floatNum 0.6s ease infinite;
+    }
+    @keyframes floatNum {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+    }
+    
+    /* about image shadow + filter */
+    .about-img img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: var(--r);
+      box-shadow: 8px 8px 0 var(--teal), 0 4px 24px rgba(0,0,0,0.12);
+      filter: saturate(1.15) contrast(1.05);
+      transition: filter 0.4s;
+    }
+    .about-img img:hover { filter: saturate(1.4) contrast(1.1) brightness(1.05); }
+    .check-icon {
+      width: 24px; height: 24px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      margin-right: 12px;
+      transition: transform 0.5s ease;
+    }
+    .feature-list li:hover .check-icon {
+      transform: rotate(360deg) scale(1.15);
+    }
+    
+    /* new store section pattern */
+    .new-store {
+      background-color: var(--light-bg);
+      background-image: radial-gradient(circle at 2px 2px, rgba(42,125,120,0.1) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+    .store-card {
+      border-radius: var(--r);
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s;
+      transform-style: preserve-3d;
+    }
+    .store-card:hover {
+      transform: perspective(600px) rotateY(4deg) scale(1.03);
+      box-shadow: 6px 6px 20px rgba(0,0,0,0.15);
+    }
+    .store-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.35s, filter 0.3s;
+    }
+    .store-card:hover img {
+      transform: scale(1.05);
+      filter: brightness(0.82) saturate(1.25);
+    }
+    .store-label {
+      position: absolute;
+      bottom: 10px; left: 10px;
+      background: rgba(255,255,255,0.92);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: bottom 0.3s ease, background 0.25s;
+    }
+    .store-card:hover .store-label {
+      bottom: 50%;
+      transform: translateY(50%);
+      background: var(--teal);
+      color: white;
+    }
+    .check-all {
+      color: var(--teal);
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+    }
+    .check-all::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 2px;
+      background: var(--teal);
+      transition: width 0.3s;
+    }
+    .check-all:hover::after { width: 100%; }
+    
+    /* manufacturer image 3D tilt */
+    .manufacturer-img {
+      perspective: 800px;
+    }
+    .manufacturer-img img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      filter: hue-rotate(-5deg) saturate(1.1);
+      transition: transform 0.4s ease, filter 0.4s;
+    }
+    .manufacturer-img img:hover {
+      transform: rotateY(-4deg) rotateX(2deg) scale(1.02);
+      filter: hue-rotate(0deg) saturate(1.3) brightness(1.05);
+    }
+    
+    /* product grid */
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: white;
+      transition: box-shadow 0.25s, transform 0.2s;
+      transform-style: preserve-3d;
+      perspective: 600px;
+      cursor: pointer;
+      position: relative;
+    }
+    .product-card::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .product-card:hover {
+      box-shadow: 0 12px 40px rgba(42,125,120,0.18), 0 2px 8px rgba(0,0,0,0.08);
+      transform: translateY(-6px) rotateX(2deg);
+    }
+    .product-card:hover::before { opacity: 1; }
+    .product-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .product-img-wrap img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.35s;
+    }
+    .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+    .add-btn {
+      position: absolute;
+      bottom: 10px; right: 10px;
+      width: 32px; height: 32px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.25s;
+      cursor: pointer;
+    }
+    .product-card:hover .add-btn {
+      opacity: 1;
+      transform: rotate(90deg) scale(1.1);
+    }
+    .price-new { color: var(--teal); font-weight: 700; }
+    .price-old { color: #bbb; font-size: 0.8rem; text-decoration: line-through; margin-left: 6px; }
+    .dots-group .dot {
+      width: 9px; height: 9px;
+      background: #d0ccc8;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 0 4px;
+      transition: background 0.2s;
+      cursor: pointer;
+      animation: dotIn 0.4s ease both;
+    }
+    .dots-group .dot.active { background: var(--teal); }
+    @keyframes dotIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .dot-arrow {
+      font-size: 1.2rem;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+    
+    /* testimonial */
+    .testimonials { background: var(--light-bg); }
+    .testimonial-card {
+      background: white;
+      border-radius: var(--r);
+      padding: 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.09), inset 0 1px 0 rgba(255,255,255,0.8);
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 10px; right: 20px;
+      font-family: var(--font-display);
+      font-size: 7rem;
+      color: rgba(42,125,120,0.08);
+      pointer-events: none;
+    }
+    .reviewer-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .nav-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: white;
+      transition: all 0.2s;
+    }
+    .nav-btn.active-nav, .nav-btn:hover {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+    }
+    .active-nav { animation: pulse 2s ease infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(42,125,120,0.4); }
+      50% { box-shadow: 0 0 0 7px rgba(42,125,120,0); }
+    }
+    .testi-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      border-radius: var(--r);
+      filter: saturate(0.85) brightness(0.97);
+      transition: filter 0.4s;
+    }
+    .testi-img:hover { filter: saturate(1.1) brightness(1.03); }
+    
+    /* CTA */
+    .cta-banner {
+      background: var(--teal);
+    }
+    .cta-lamp-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      filter: grayscale(0.3);
+    }
+    .cta-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: white;
+    }
+    .cta-form-group {
+      max-width: 420px;
+      width: 100%;
+    }
+    .cta-form-group input {
+      flex: 1;
+      padding: 13px 18px;
+      border: none;
+      border-radius: var(--r) 0 0 var(--r);
+      outline: none;
+    }
+    .cta-form-group .btn-teal {
+      border-radius: 0 var(--r) var(--r) 0;
+      background: var(--dark);
+      padding: 13px 26px;
+    }
+    .cta-form-group .btn-teal:hover { background: #333; }
+    @media (max-width: 520px) {
+      .cta-form-group { flex-direction: column; }
+      .cta-form-group input { border-radius: var(--r) var(--r) 0 0; }
+      .cta-form-group .btn-teal { border-radius: 0 0 var(--r) var(--r); }
+    }
+    
+    /* Contact form (Task 6) */
+    .contact-section { background: var(--light-bg); }
+    .contact-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px 36px;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(42,125,120,0.1);
+    }
+    .form-control-custom, .form-select-custom {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+    .form-control-custom:focus, .form-select-custom:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(42,125,120,0.14);
+    }
+    .section-heading h2::after {
+      content: '';
+      display: block;
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+    
+    /* footer */
+    .footer {
+      background: #1c1c1c;
+      color: rgba(255,255,255,0.7);
+      padding-top: 56px;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      background: linear-gradient(90deg, var(--white), var(--teal-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    .social-icon {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+    }
+    .social-icon:hover {
+      background: var(--teal);
+      transform: rotate(15deg) scale(1.18);
+    }
+    .footer-col a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .footer-col a:hover {
+      color: var(--teal-light);
+      text-decoration-color: var(--teal-light);
+    }
+    .border-bottom-footer {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (max-width: 768px) {
+      .stat-item { margin-bottom: 16px; }
+      .new-store-items .store-card { margin-bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR (Bootstrap + custom toggler) -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand navbar-brand-custom" href="#">FurniShop</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-4">
+        <li class="nav-item"><a class="nav-link nav-link-custom active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Features</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-section">
+  <img src="23d528c58f82d2c087c3c1808660cf2b4c6dc4a5.jpg" alt="Modern green sofa" class="hero-bg">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <h1>Creative Home Simpify Your<br>Furniture</h1>
+    <p>Do i have consent to record this meeting gain bcasin, root-and-branch, review, nor game plan who's me.</p>
+    <a href="#" class="btn btn-teal">Shop Now</a>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="row text-center text-md-start g-4">
+      <div class="col-md-3 col-6"><div class="stat-item"><span class="stat-number">7</span><span class="stat-label">Year<br>Experience</span></div></div>
+      <div class="col-md-3 col-6"><div class="stat-item"><span class="stat-number">2</span><span class="stat-label">Opened in<br>the country</span></div></div>
+      <div class="col-md-3 col-6"><div class="stat-item"><span class="stat-number">10k+</span><span class="stat-label">Furniture<br>sold</span></div></div>
+      <div class="col-md-3 col-6"><div class="stat-item"><span class="stat-number">260+</span><span class="stat-label">Variant<br>Furniture</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 about-img"><img src="29fcb6eec1a6b8bfe25ce205553cb2aad2c02d09.jpg" alt="Elegant sofa"></div>
+      <div class="col-lg-6"><h2 class="mb-3">We Create Your Home<br>More Aestetic</h2><p class="text-secondary mb-3">Furnitre power is a software as services for multipurpose business management system.</p><ul class="list-unstyled feature-list"><li class="d-flex"><span class="check-icon">✔</span><div><strong>Valuation Services</strong><p class="text-secondary small">Sometimes features require a short description.</p></div></li><li class="d-flex"><span class="check-icon">✔</span><div><strong>Development of Furniture Models</strong><p class="text-secondary small">Sometimes features require a short description.</p></div></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW IN STORE -->
+<section class="new-store section-pad">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-5 mb-4 mb-md-0"><h2>New In<br>Store Now</h2><p class="text-secondary">Get the latest items immediately with promo prices</p><a href="#" class="check-all">Check All →</a></div>
+      <div class="col-md-7"><div class="row g-3 new-store-items"><div class="col-6 col-md-3"><div class="store-card position-relative"><img src="29fcb6eec1a6b8bfe25ce205553cb2aad2c02d09.jpg" alt="Chair"><span class="store-label">Chair</span></div></div><div class="col-6 col-md-3"><div class="store-card position-relative"><img src="217b44c5785cbfe347938fe2bb9eeeac65a16ec9.jpg" alt="Bed"><span class="store-label">Bed</span></div></div><div class="col-6 col-md-3"><div class="store-card position-relative"><img src="7d951bb03f528df9d9cf231525760b4998339282.jpg" alt="Cupboard"><span class="store-label">Cupboard</span></div></div><div class="col-6 col-md-3"><div class="store-card position-relative"><img src="19d91c85ea252f233a27934eb0e7e60e9b2b3740.jpg" alt="Lighting"><span class="store-label">Lighting</span></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MANUFACTURER -->
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6"><h2>The Best Furniture<br>Manufacturer Of Your Choice</h2><p class="text-secondary">Furnitre power is a software as services for multipurpose business management system, especially for them who are running two or more business explorer the future Furnitre power is a software as services ).</p></div>
+      <div class="col-lg-6 manufacturer-img"><img src="f60bac0a80587cae68f9d90a8b1c2c3387d3f2eb.png" alt="Modern kitchen"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS GRID -->
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center section-heading mb-5"><h2>All Product</h2><p class="text-secondary mx-auto" style="max-width:480px">The products we provide only for you as our service are selected from the best products with number 1 quality in the world</p></div>
+    <div class="row g-4 products-grid">
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="201ac132116bcc90e2f261a81a619ef41d7f44e6.jpg" class="w-100" alt="Ceiling Light"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Ceiling Light</span><div><span class="price-new">€75.00</span><span class="price-old">€99.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="77c74dd8622f631535544d7a3babe67e9aa6a8c8.png" class="w-100" alt="Wood Chair"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Wood Chair</span><div><span class="price-new">€50.00</span><span class="price-old">€75.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="b9ee5648b41571a60974d3b3e79c8f3d942cbb65.jpg" class="w-100" alt="Papper Cupboard"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Papper Cupboard</span><div><span class="price-new">€105.00</span><span class="price-old">€140.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="d2550c0bc4b77808832583fe3242fb027c890183.jpg" class="w-100" alt="Ole Gundorse"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Ole Gundorse Spring…</span><div><span class="price-new">€60.00</span><span class="price-old">€80.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="2f3199c8ac5d27f084ee350a6571863d1199a131.jpg" class="w-100" alt="Treos Seroes"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Treos Seroes 911</span><div><span class="price-new">€200.00</span><span class="price-old">€260.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="5a49214161f50f0a929288ea5e402cc0ae89bde7.jpg" class="w-100" alt="Multi Bilderman"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Multi Bilderman Sliber…</span><div><span class="price-new">€44.00</span><span class="price-old">€55.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="74d0206c55d7389b12ec68b56e8686eb48107e66.jpg" class="w-100" alt="XORA Desk"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">XORA Corner Desk</span><div><span class="price-new">€320.00</span><span class="price-old">€400.00</span></div></div></div></div>
+      <div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="e9e51778f3e0a05db2edf04624c49158fc659aad.jpg" class="w-100" alt="Black Forest"><button class="add-btn">+</button></div><div class="p-3"><span class="fw-semibold">Black Forest Series Wo…</span><div><span class="price-new">€625.00</span><span class="price-old">€700.00</span></div></div></div></div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center gap-2 mt-4 dots-group"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot-arrow">›</span></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-pad testimonials">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6"><h2>What People Are Saying About Us</h2><div class="testimonial-card mt-4"><div class="d-flex align-items-center gap-3 mb-3"><img src="a27bb91afb0ec304610b4834f08a60cec93a7a06.jpg" class="reviewer-avatar"><div><strong>Josh Smith</strong><div class="small text-secondary">The New York Times</div></div></div><p class="review-text">"They are have a perfect touch for make something so professional ,interest and useful for a lot of people."</p><div class="d-flex gap-2"><button class="nav-btn">‹</button><button class="nav-btn active-nav">›</button></div></div></div>
+      <div class="col-lg-6"><img src="649dc57e7e45630bf89f9157ff262817a8c5adcb.jpg" class="testi-img" alt="Living room"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="row g-0 align-items-stretch">
+    <div class="col-md-4 col-12 cta-lamp-img"><img src="f4d5d5dc898fbd88150fd0e8ce8e5a85ec6d8ab2.jpg" alt="lamp"></div>
+    <div class="col-md-8 col-12"><div class="cta-content text-center py-5 px-3"><h2>Get more discount<br>Off your order</h2><p>Join our mailing list</p><div class="cta-form-group d-flex mx-auto"><input type="email" placeholder="Your email address" class="form-control-custom rounded-0"><button class="btn btn-teal rounded-0">Shop Now</button></div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT FORM (Task 6) -->
+<section class="contact-section section-pad">
+  <div class="container">
+    <div class="text-center section-heading mb-5"><h2>Contact Us</h2><p class="text-secondary">Have a question about our furniture? Send us a message and we'll get back to you.</p></div>
+    <div class="contact-card"><div class="row g-3"><div class="col-md-6"><label class="form-label small fw-semibold text-uppercase">First Name</label><input type="text" class="form-control-custom w-100" placeholder="John"></div><div class="col-md-6"><label class="form-label small fw-semibold text-uppercase">Last Name</label><input type="text" class="form-control-custom w-100" placeholder="Smith"></div><div class="col-12"><label class="form-label small fw-semibold text-uppercase">Email Address</label><input type="email" class="form-control-custom w-100" placeholder="john@example.com"></div><div class="col-12"><label class="form-label small fw-semibold text-uppercase">Subject</label><select class="form-select-custom w-100"><option>Select a topic…</option><option>Product Inquiry</option><option>Order Status</option><option>Return & Refund</option></select></div><div class="col-12"><label class="form-label small fw-semibold text-uppercase">Message</label><textarea class="form-control-custom w-100" rows="3" placeholder="Tell us how we can help…"></textarea></div><div class="col-12 text-end"><button class="btn btn-teal">Send Message</button></div></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container"><div class="row pb-5 border-bottom-footer"><div class="col-lg-3 col-md-6 mb-4"><div class="footer-logo mb-3">FurniShop</div><div class="d-flex gap-2"><a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a><a href="#" class="social-icon"><i class="bi bi-facebook"></i></a><a href="#" class="social-icon"><i class="bi bi-play-btn"></i></a><a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a><a href="#" class="social-icon"><i class="bi bi-instagram"></i></a></div></div><div class="col-lg-2 col-md-6 mb-4 footer-col"><h5 class="text-white fs-6">Our Products</h5><ul class="list-unstyled"><li><a href="#">The Support Suite</a></li><li><a href="#">The Guide Suite</a></li><li><a href="#">Support</a></li><li><a href="#">Guide</a></li></ul></div><div class="col-lg-2 col-md-6 mb-4 footer-col"><h5 class="text-white fs-6">Top Features</h5><ul class="list-unstyled"><li><a href="#">Ticketing System</a></li><li><a href="#">Knowledge Base</a></li><li><a href="#">Community Forums</a></li><li><a href="#">Help Center</a></li></ul></div><div class="col-lg-2 col-md-6 mb-4 footer-col"><h5 class="text-white fs-6">Resources</h5><ul class="list-unstyled"><li><a href="#">Product Support</a></li><li><a href="#">Request Demo</a></li><li><a href="#">Library</a></li><li><a href="#">Blog</a></li></ul></div><div class="col-lg-2 col-md-6 mb-4 footer-col"><h5 class="text-white fs-6">Company</h5><ul class="list-unstyled"><li><a href="#">About Us</a></li><li><a href="#">Press</a></li><li><a href="#">Investors</a></li><li><a href="#">Events</a></li></ul></div></div><div class="text-center py-3 small text-white-50">© NameBrand 2022 – All Rights Reserved</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
