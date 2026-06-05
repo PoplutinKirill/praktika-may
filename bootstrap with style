@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>FurniShop — Наш офис в Гродно</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS + Icons + JS Bundle -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <style>
+    /* ----- custom refined styles ----- */
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --teal: #2a7d78;
+      --teal-dark: #1f5e5a;
+      --teal-light: #3a9d97;
+      --dark: #1a1a1a;
+      --mid: #555;
+      --light-bg: #f7f6f4;
+      --white: #ffffff;
+      --border: #e8e4df;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --r: 12px;
+      --shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    h1, h2, h3, .logo-font { font-family: var(--font-display); letter-spacing: -0.02em; }
+    .section-pad { padding: 80px 0; }
+    @media (max-width: 768px) { .section-pad { padding: 56px 0; } }
+    
+    /* buttons & interactive */
+    .btn-teal {
+      background: var(--teal);
+      color: var(--white);
+      padding: 12px 32px;
+      border-radius: var(--r);
+      font-weight: 600;
+      font-size: 0.93rem;
+      transition: all 0.25s ease;
+      border: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .btn-teal:hover {
+      background: var(--teal-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(42,125,120,0.2);
+      color: white;
+    }
+    .btn-outline-teal {
+      border: 1.5px solid var(--teal);
+      color: var(--teal);
+      background: transparent;
+      border-radius: var(--r);
+      padding: 8px 24px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-outline-teal:hover { background: var(--teal); color: white; border-color: var(--teal); }
+    
+    /* navbar refined */
+    .navbar-custom { background: rgba(26,26,26,0.96); backdrop-filter: blur(10px); padding: 0; }
+    .navbar-brand-custom {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, var(--teal-light) 70%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-link-custom {
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .nav-link-custom:hover, .nav-link-custom.active { color: white; }
+    .dropdown-menu { border-radius: 14px; border: none; box-shadow: 0 12px 28px rgba(0,0,0,0.1); margin-top: 8px; }
+    
+    /* hero */
+    .hero-section { min-height: 95vh; position: relative; padding-top: 70px; display: flex; align-items: center; }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.85); animation: heroZoom 1.2s forwards; }
+    @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,0,0,0.7) 0%, rgba(42,125,120,0.4) 60%, rgba(0,0,0,0.2) 100%); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; max-width: 560px; animation: fadeUp 0.9s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* stats bar */
+    .stats-bar { background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, var(--teal-light) 100%); padding: 28px 0; }
+    .stat-number { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: white; }
+    
+    /* product card */
+    .product-card { border: 1px solid var(--border); border-radius: 20px; background: white; transition: all 0.3s cubic-bezier(0.2,0,0,1); cursor: pointer; overflow: hidden; height: 100%; }
+    .product-card:hover { box-shadow: 0 20px 35px rgba(42,125,120,0.12); transform: translateY(-6px); }
+    .product-img-wrap { position: relative; overflow: hidden; background: #faf9f7; }
+    .product-img-wrap img { width: 100%; height: 190px; object-fit: cover; transition: transform 0.4s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+    .add-btn { position: absolute; bottom: 12px; right: 12px; width: 36px; height: 36px; background: var(--teal); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.2s; font-size: 1.2rem; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .product-card:hover .add-btn { opacity: 1; transform: scale(1); }
+    .price-new { color: var(--teal); font-weight: 800; font-size: 1.1rem; }
+    .price-old { color: #aaa; text-decoration: line-through; margin-left: 6px; font-size: 0.85rem; }
+    
+    /* ----- КАРТОЧКА ОФИСА (центрированная, растянутая, элегантная) ----- */
+    .office-card {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem 2rem 2.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(42,125,120,0.2);
+      transition: all 0.2s;
+      height: 100%;
+    }
+    .office-address {
+      background: #f8f7f4;
+      border-radius: 24px;
+      padding: 1.2rem;
+      margin-top: 1.2rem;
+      border-left: 5px solid var(--teal);
+    }
+    .contact-icon-circle {
+      width: 44px;
+      height: 44px;
+      background: rgba(42,125,120,0.1);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-size: 1.3rem;
+    }
+    .map-placeholder {
+      background: #e9ecef;
+      border-radius: 24px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232a7d78" width="48px" height="48px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center 30px;
+      background-size: 48px;
+    }
+    .office-hours {
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+    /* comment section */
+    .comment-section {
+      background: var(--light-bg);
+      border-radius: 32px;
+      padding: 2rem 1.8rem;
+      margin-top: 2rem;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .comment-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.25rem;
+      transition: 0.15s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      border: 1px solid #edeae5;
+    }
+    .comment-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--teal-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .form-control-custom, .form-select-custom { padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 20px; }
+    .offcanvas-cart { width: 400px; }
+    .footer { background: #1c1c1c; color: rgba(255,255,255,0.7); padding-top: 56px; }
+    .social-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .social-icon:hover { background: var(--teal); transform: translateY(-3px); }
+    section { scroll-margin-top: 80px; }
+  </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbarMain" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+
+<!-- навигация -->
+<nav id="navbarMain" class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand navbar-brand-custom" href="#">FurniShop</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#hero">Главная</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#about">О нас</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#products">Товары</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#contact">Контакты</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Дополнительно</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newsletterModal">Новостная рассылка</a></li>
+            <li><a class="dropdown-item" href="#" id="showToastBtn">Спецпредложение</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">Корзина</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+            <i class="bi bi-cart3"></i> <span id="cartCountBadge" class="badge rounded-pill" style="background:var(--teal);">0</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- offcanvas корзина -->
+<div class="offcanvas offcanvas-end offcanvas-cart" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+  <div class="offcanvas-header border-bottom"><h5 class="offcanvas-title"><i class="bi bi-bag-check"></i> Ваша корзина</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button></div>
+  <div class="offcanvas-body"><div id="cartItemsList"><p class="text-muted text-center">Корзина пуста.</p></div><hr><div class="d-flex justify-content-between fw-bold"><span>Итого:</span><span id="cartTotal">€0.00</span></div><button class="btn btn-teal w-100 mt-3" disabled>Оформить</button></div>
+</div>
+
+<!-- Hero -->
+<section id="hero" class="hero-section">
+  <img src="23d528c58f82d2c087c3c1808660cf2b4c6dc4a5.jpg" alt="hero furniture" class="hero-bg">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content"><h1>FurniShop<br>Дизайн, вдохновлённый природой</h1><p>Качественная мебель с доставкой по Беларуси. Посетите наш шоурум в Гродно.</p><a href="#" class="btn btn-teal" id="heroShopBtn">В каталог</a></div>
+</section>
+
+<!-- Статистика -->
+<section class="stats-bar"><div class="container"><div class="row text-center g-4"><div class="col-md-3 col-6"><div><span class="stat-number">7</span><br>Лет опыта</div></div><div class="col-md-3 col-6"><div><span class="stat-number">2</span><br>Шоурума</div></div><div class="col-md-3 col-6"><div><span class="stat-number">10k+</span><br>Проданной мебели</div></div><div class="col-md-3 col-6"><div><span class="stat-number">260+</span><br>Вариантов</div></div></div></div></section>
+
+<!-- About -->
+<section id="about" class="section-pad"><div class="container"><div class="row align-items-center g-5"><div class="col-lg-6"><img src="29fcb6eec1a6b8bfe25ce205553cb2aad2c02d09.jpg" class="w-100 rounded-4 shadow" alt="sofa"></div><div class="col-lg-6"><h2>Создаём уют в вашем доме</h2><p class="text-secondary">FurniShop — белорусский производитель экологичной мебели. Сочетаем стиль и комфорт.</p><button class="btn btn-outline-teal mt-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Узнайте о наших коллекциях">Подробнее</button></div></div></div></section>
+
+<!-- FAQ accordion -->
+<section class="section-pad" style="padding-top:0"><div class="container"><div class="text-center mb-5"><h2>Часто задаваемые вопросы</h2></div><div class="row justify-content-center"><div class="col-lg-8"><div class="accordion" id="faqAccordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">Доставка по Беларуси</button></h2><div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">Бесплатная доставка при заказе от 500 BYN. Срок доставки 3-7 дней.</div></div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Возврат товара</button></h2><div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">30 дней на возврат, полный возврат средств при сохранении товарного вида.</div></div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">Гарантия</button></h2><div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">2 года гарантии на всю корпусную мебель.</div></div></div></div></div></div></div></section>
+
+<!-- Товары -->
+<section id="products" class="section-pad pt-0"><div class="container"><div class="text-center mb-5"><h2>Наши товары</h2><p class="text-secondary">Лучшие коллекции для дома и офиса</p></div><div class="row g-4 products-grid" id="productsRow"></div></div></section>
+
+<!-- Карусель вдохновения -->
+<section class="section-pad" style="background: var(--light-bg);"><div class="container"><div class="text-center mb-4"><h2>Галерея интерьеров</h2></div><div id="inspirationCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#inspirationCarousel" data-bs-slide-to="0" class="active"></button><button type="button" data-bs-target="#inspirationCarousel" data-bs-slide-to="1"></button><button type="button" data-bs-target="#inspirationCarousel" data-bs-slide-to="2"></button></div><div class="carousel-inner rounded-4 shadow"><div class="carousel-item active"><img src="29fcb6eec1a6b8bfe25ce205553cb2aad2c02d09.jpg" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="room"></div><div class="carousel-item"><img src="649dc57e7e45630bf89f9157ff262817a8c5adcb.jpg" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="elegant"></div><div class="carousel-item"><img src="f60bac0a80587cae68f9d90a8b1c2c3387d3f2eb.png" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="kitchen"></div></div><button class="carousel-control-prev" type="button" data-bs-target="#inspirationCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button><button class="carousel-control-next" type="button" data-bs-target="#inspirationCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button></div></div></section>
+
+<!-- Вкладки с товарами -->
+<section class="section-pad"><div class="container"><ul class="nav nav-tabs justify-content-center mb-4" id="productTab" role="tablist"><li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#popular"> Популярное</button></li><li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#newArrivals"> Новинки</button></li><li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sale"> Скидки</button></li></ul><div class="tab-content"><div class="tab-pane fade show active" id="popular"><div class="row"><div class="col-md-4"><div class="product-card p-3 text-center">Светильник потолочный <span class="price-new">€75</span></div></div><div class="col-md-4"><div class="product-card p-3 text-center">Стул Wood <span class="price-new">€50</span></div></div><div class="col-md-4"><div class="product-card p-3 text-center">Комод Papper <span class="price-new">€105</span></div></div></div></div><div class="tab-pane fade" id="newArrivals"><div class="row"><div class="col-md-4"><div class="product-card p-3 text-center">Кресло Ole <span class="price-new">€60</span></div></div><div class="col-md-4"><div class="product-card p-3 text-center">Шкаф Treos <span class="price-new">€200</span></div></div><div class="col-md-4"><div class="product-card p-3 text-center">Стол Bilderman <span class="price-new">€44</span></div></div></div></div><div class="tab-pane fade" id="sale"><div class="row"><div class="col-md-4"><div class="product-card p-3 text-center">Стол-книжка XORA <span class="price-new">€320</span> <span class="price-old">€400</span></div></div><div class="col-md-4"><div class="product-card p-3 text-center">Гарнитур Black Forest <span class="price-new">€625</span> <span class="price-old">€700</span></div></div></div></div></div></div></section>
+
+<!-- === ОСНОВНОЙ БЛОК: ИНФОРМАЦИЯ ОФИСА  + КОНТАКТНАЯ ФОРМА === -->
+<section id="contact" class="contact-section section-pad">
+  <div class="container">
+    <div class="text-center mb-5"><h2>Наш офис и шоурум</h2><p class="text-secondary">Приходите знакомиться с коллекцией лично</p></div>
+    <div class="row g-5">
+      <!-- ЛЕВАЯ КОЛОНКА: КАРТОЧКА ОФИСА (центрированная, растянутая) -->
+      <div class="col-lg-6">
+        <div class="office-card">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="contact-icon-circle"><i class="bi bi-geo-alt-fill"></i></div>
+            <h3 class="mb-0" style="font-family:var(--font-display);">Центральный офис</h3>
+          </div>
+          <div class="office-address">
+            <p class="mb-1"><strong><i class="bi bi-house-door"></i> Адрес:</strong></p>
+            <p class="fs-5 fw-semibold text-dark">ул. Советских Пограничников, д. 2, <br>г. Гродно, Республика Беларусь, 230005</p>
+            <hr class="my-2">
+            <p><i class="bi bi-telephone-fill me-2" style="color:var(--teal);"></i> <strong>Телефон:</strong> +375 (29) 123-45-67<br>
+            <i class="bi bi-envelope-fill me-2" style="color:var(--teal);"></i> <strong>Email:</strong> office@furnishop.by</p>
+          </div>
+          <!-- имитация карты (стилизованный блок) -->
+          <div class="map-placeholder mt-3">
+            <div class="text-center p-3"><i class="bi bi-pin-map-fill" style="font-size: 2.5rem; color:var(--teal);"></i><p class="mt-2 text-muted small">ул. Советских Пограничников 2, Гродно</p><span class="badge bg-teal-light text-dark">остановка "Советских Пограничников"</span></div>
+          </div>
+          <div class="office-hours mt-3">
+            <p><i class="bi bi-clock-history"></i> <strong>Режим работы:</strong><br>Пн–Пт: 10:00 – 19:00<br>Сб: 11:00 – 17:00<br>Вс: выходной</p>
+            <div class="alert alert-light mt-2 border-0 bg-teal bg-opacity-10 rounded-3"><i class="bi bi-truck"></i> Бесплатная парковка для клиентов.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ПРАВАЯ КОЛОНКА: контактная форма + сворачиваемый блок -->
+      <div class="col-lg-6">
+        <div class="contact-card">
+          <h4 class="mb-3"><i class="bi bi-chat-right-quote-fill"></i> Напишите нам</h4>
+          <p class="text-muted">Оставьте сообщение, и мы свяжемся с вами в течение дня.</p>
+          <form id="feedbackForm">
+            <div class="row g-3">
+              <div class="col-md-6"><label class="form-label small fw-semibold">Имя</label><input type="text" class="form-control-custom w-100" id="fname" placeholder="Иван"></div>
+              <div class="col-md-6"><label class="form-label small fw-semibold">Фамилия</label><input type="text" class="form-control-custom w-100" id="lname" placeholder="Петров"></div>
+              <div class="col-12"><label class="form-label small fw-semibold">Email</label><input type="email" class="form-control-custom w-100" id="emailContact" placeholder="ivan@example.com"></div>
+              <div class="col-12"><label class="form-label small fw-semibold">Тема</label><select class="form-select-custom w-100"><option>Вопрос о мебели</option><option>Заказ и доставка</option><option>Посещение шоурума</option></select></div>
+              <div class="col-12"><label class="form-label small fw-semibold">Сообщение</label><textarea class="form-control-custom w-100" rows="3" placeholder="Ваш текст..."></textarea></div>
+              <div class="col-12"><button type="button" class="btn btn-teal" id="sendMsgBtn" data-bs-toggle="popover" data-bs-trigger="focus" title=" Наш адрес" data-bs-content="г. Гродно, ул. Советских Пограничников д.2">Отправить</button>
+              <button type="button" class="btn btn-link ms-2" data-bs-toggle="tooltip" data-bs-title="Ждём вас в шоуруме!"><i class="bi bi-question-circle"></i></button></div>
+            </div>
+          </form>
+          <div id="progressContainer" class="mt-3 d-none"><div class="d-flex justify-content-between small mb-1"><span>Отправка...</span><span id="progressPercent">0%</span></div><div class="progress progress-custom"><div id="demoProgress" class="progress-bar bg-teal" style="width:0%"></div></div></div>
+          <div id="spinnerLoader" class="text-center mt-3 d-none"><div class="spinner-grow text-teal" role="status"></div><span class="ms-2">Отправляем...</span></div>
+        </div>
+        <!-- сворачиваемый блок о компании -->
+        <div class="bg-white p-4 rounded-3 shadow-sm mt-4">
+          <h4><i class="bi bi-tree-fill"></i> Наша философия</h4>
+          <p>Мебель из натуральных материалов, ручная работа и забота об экологии.</p>
+          <button class="btn btn-sm btn-outline-teal" type="button" data-bs-toggle="collapse" data-bs-target="#readMoreBlock">Подробнее →</button>
+          <div class="collapse mt-3" id="readMoreBlock"><div class="card card-body bg-light">Мы используем сертифицированную древесину и нетоксичные краски. Каждая покупка помогает высадить дерево в Беловежской пуще.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== БЛОК КОММЕНТАРИЕВ (ровно) ========== -->
+    <div class="comment-section mt-5">
+      <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <h3 class="mb-2"><i class="bi bi-star-fill me-2" style="color:var(--teal);"></i> Отзывы наших клиентов</h3>
+        <button class="btn btn-teal btn-submit-comment" data-bs-toggle="collapse" data-bs-target="#newCommentForm" aria-expanded="false">+ Оставить отзыв</button>
+      </div>
+      <div class="collapse mb-4" id="newCommentForm">
+        <div class="card p-3 border-0 shadow-sm">
+          <div class="mb-3"><input type="text" class="form-control" id="commentAuthor" placeholder="Ваше имя"></div>
+          <div class="mb-3"><textarea class="form-control" rows="2" id="commentText" placeholder="Поделитесь впечатлениями о мебели или посещении офиса..."></textarea></div>
+          <div><button class="btn btn-outline-teal" id="publishCommentBtn">Опубликовать</button></div>
+        </div>
+      </div>
+      <div id="commentsList">
+        <div class="comment-card d-flex gap-3"><div class="comment-avatar">АК</div><div><h6 class="mb-0">Анна Ковальчук <span class="comment-date ms-2">★ ★ ★ ★ ★</span></h6><p class="mb-0 mt-1">Офис на Советских Пограничников очень удобно расположен! Консультанты помогли подобрать идеальный стол.</p><small class="text-muted">3 дня назад</small></div></div>
+        <div class="comment-card d-flex gap-3"><div class="comment-avatar">ДМ</div><div><h6 class="mb-0">Дмитрий Мороз <span class="comment-date ms-2">★ ★ ★ ★ ☆</span></h6><p class="mb-0 mt-1">Отличный шоурум в Гродно. Качество мебели порадовало, доставка вовремя.</p><small class="text-muted">1 неделю назад</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Модальное окно и тост -->
+<div class="modal fade" id="newsletterModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Скидка 10%</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="email" class="form-control" placeholder="Ваш email"></div><div class="modal-footer"><button class="btn btn-teal" data-bs-dismiss="modal">Подписаться</button></div></div></div></div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="liveToast" class="toast" data-bs-autohide="true" data-bs-delay="3000"><div class="toast-header bg-teal text-white"><i class="bi bi-bag-check me-2"></i><strong>FurniShop</strong><button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button></div><div class="toast-body" id="toastMessage">Товар добавлен!</div></div></div>
+
+<footer class="footer"><div class="container"><div class="row pb-5"><div class="col-lg-3 col-md-6 mb-4"><div class="footer-logo mb-3">FurniShop</div><div class="d-flex gap-2"><a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a><a href="#" class="social-icon"><i class="bi bi-facebook"></i></a><a href="#" class="social-icon"><i class="bi bi-instagram"></i></a></div><p class="small mt-2">ул. Советских Пограничников, 2, Гродно</p></div><div class="col-lg-2 col-md-6 mb-4"><h5>Продукты</h5><ul class="list-unstyled"><li><a href="#">Каталог</a></li><li><a href="#">Акции</a></li></ul></div></div><div class="text-center py-3 small text-white-50">© FurniShop 2025 — Мебель с душой в Гродно</div></div></footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация Bootstrap-компонентов
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el=>new bootstrap.Tooltip(el));
+    [...document.querySelectorAll('[data-bs-toggle="popover"]')].forEach(el=>new bootstrap.Popover(el));
+    new bootstrap.ScrollSpy(document.body, { target: '#navbarMain', offset: 70 });
+    
+    // Корзина 
+    let cart = [];
+    function updateCartUI(){
+      const cartDiv=document.getElementById('cartItemsList'), totalSpan=document.getElementById('cartTotal'), badge=document.getElementById('cartCountBadge');
+      if(cart.length===0){ cartDiv.innerHTML='<p class="text-muted text-center">Корзина пуста.</p>'; totalSpan.innerText='€0.00'; badge.innerText='0'; return; }
+      let total=0; let html='<ul class="list-group list-group-flush">';
+      cart.forEach((item,idx)=>{ total+=item.price; html+=`<li class="list-group-item d-flex justify-content-between"><div><img src="${item.img}" class="cart-item-img me-2" width="45" height="45">${item.name}</div><span>€${item.price}</span><button class="btn btn-sm btn-outline-danger remove-item" data-index="${idx}">✖</button></li>`; });
+      html+='</ul>'; cartDiv.innerHTML=html; totalSpan.innerText=`€${total.toFixed(2)}`; badge.innerText=cart.length;
+      document.querySelectorAll('.remove-item').forEach(btn=>btn.addEventListener('click',(e)=>{ let idx=parseInt(btn.dataset.index); cart.splice(idx,1); updateCartUI(); showToast('Товар удалён'); }));
+    }
+    window.showToast=(msg)=>{ document.getElementById('toastMessage').innerText=msg; new bootstrap.Toast(document.getElementById('liveToast')).show(); };
+    window.addToCart=(name,price,img)=>{ cart.push({name,price,img}); updateCartUI(); showToast(`${name} добавлен в корзину!`); };
+    const productsData=[{name:"Потолочный светильник",price:75,old:99,img:"201ac132116bcc90e2f261a81a619ef41d7f44e6.jpg"},{name:"Стул Wood",price:50,old:75,img:"77c74dd8622f631535544d7a3babe67e9aa6a8c8.png"},{name:"Комод Papper",price:105,old:140,img:"b9ee5648b41571a60974d3b3e79c8f3d942cbb65.jpg"},{name:"Кресло Ole",price:60,old:80,img:"d2550c0bc4b77808832583fe3242fb027c890183.jpg"},{name:"Шкаф Treos",price:200,old:260,img:"2f3199c8ac5d27f084ee350a6571863d1199a131.jpg"},{name:"Стол Multi",price:44,old:55,img:"5a49214161f50f0a929288ea5e402cc0ae89bde7.jpg"},{name:"Стол-книжка XORA",price:320,old:400,img:"74d0206c55d7389b12ec68b56e8686eb48107e66.jpg"},{name:"Гарнитур Black Forest",price:625,old:700,img:"e9e51778f3e0a05db2edf04624c49158fc659aad.jpg"}];
+    const container=document.getElementById('productsRow');
+    if(container) productsData.forEach(p=>{ container.innerHTML+=`<div class="col-md-3 col-6"><div class="product-card"><div class="product-img-wrap"><img src="${p.img}" class="w-100"><button class="add-btn" onclick="addToCart('${p.name}',${p.price},'${p.img}')">+</button></div><div class="p-3"><span class="fw-semibold">${p.name}</span><div><span class="price-new">€${p.price}</span><span class="price-old">€${p.old}</span></div></div></div></div>`; });
+    document.getElementById('showToastBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); showToast('✨ Скидка 15% на кресла!'); });
+    document.getElementById('heroShopBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); new bootstrap.Modal(document.getElementById('newsletterModal')).show(); });
+    // прогресс-бар для отправки сообщения
+    const sendBtn=document.getElementById('sendMsgBtn');
+    if(sendBtn){
+      sendBtn.addEventListener('click',()=>{ const progCont=document.getElementById('progressContainer'), spin=document.getElementById('spinnerLoader'); progCont.classList.remove('d-none'); spin.classList.remove('d-none'); let w=0, bar=document.getElementById('demoProgress'), perc=document.getElementById('progressPercent'); const intv=setInterval(()=>{ if(w>=100){ clearInterval(intv); setTimeout(()=>{ progCont.classList.add('d-none'); spin.classList.add('d-none'); showToast('Сообщение отправлено! Мы свяжемся с вами.'); },500); } else { w+=20; bar.style.width=w+'%'; if(perc) perc.innerText=w+'%'; } },200); });
+    }
+    // комментарии
+    document.getElementById('publishCommentBtn')?.addEventListener('click',()=>{ let author=document.getElementById('commentAuthor').value.trim(); let text=document.getElementById('commentText').value.trim(); if(!author) author='Гость'; if(!text) return; const commentDiv=document.createElement('div'); commentDiv.className='comment-card d-flex gap-3'; const letter=author.charAt(0).toUpperCase(); commentDiv.innerHTML=`<div class="comment-avatar">${letter}</div><div><h6 class="mb-0">${escapeHtml(author)} <span class="comment-date ms-2">★ ★ ★ ★ ☆</span></h6><p class="mb-0 mt-1">${escapeHtml(text)}</p><small class="text-muted">Только что</small></div>`; document.getElementById('commentsList').prepend(commentDiv); document.getElementById('commentAuthor').value=''; document.getElementById('commentText').value=''; showToast('Спасибо за отзыв!'); });
+    function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    updateCartUI();
+  });
+</script>
+</body>
+</html>
